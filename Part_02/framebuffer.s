@@ -147,17 +147,12 @@ fb_setup_01:
         add     t0, t4, t3
         lw      t5, 0(t0)               # Загружаем 4 байта заголовка PCI (Device ID + Vendor ID)
 
-        li      t1, 0xFFFF
-        and     t2, t5, t1
-        beq     t2, t1, fb_setup_02     # Следующая секция, если Vendor ID равен 0xFFFF
-
         li      t1, QEMU_VGA_ID
         beq     t5, t1, fb_setup_03     # Переход на инициализацию, если заголовок равен QEMU_VGA_ID
 
-fb_setup_02:
         li      t1, 4096                # Следующая секция PCI дерева
         add     t3, t3, t1              # Добавляем к счётчику 4096 байт
-        li      t1, 0x10000000
+        li      t1, 0x10000000          # Максимальная длина всей секции PCI (4096 * 65536)
         beq     t3, t1, fb_setup_07     # Если счётчик достиг предела, уходим
         j       fb_setup_01             # Переходим на следующую итерацию цикла
 fb_setup_03:
