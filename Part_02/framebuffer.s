@@ -61,11 +61,18 @@ print_console_02:
 draw_strips:
         push    ra
         la      t0, FRAMEBUFFER
-        li      t1, 0x01040104
-        li      t2, SCREEN_X / 4 * SCREEN_Y
+
+        li      t1, 0x00020406
+        li      t3, 0x01030507
+
+        li      t2, SCREEN_X / 8 * SCREEN_Y
 draw_strips_01:
         sw      t1, 0x0(t0)
         addi    t0, t0, 4
+
+        sw      t3, 0x0(t0)
+        addi    t0, t0, 4
+
         addi    t2, t2, -1
         bne     t2, zero, draw_strips_01
         pop     ra
